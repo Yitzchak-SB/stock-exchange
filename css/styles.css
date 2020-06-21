@@ -60,3 +60,11 @@
   padding: 10px;
   width: 430px;
 }
+
+.text-red {
+  color: red;
+}
+
+.text-green {
+  color: green;
+}

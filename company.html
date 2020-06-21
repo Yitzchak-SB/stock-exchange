@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ITC Template</title>
+    <meta name="description" content="Stock Exchange Market" />
+    <meta name="author" content="Yitzchak Siegel-Bareket" />
+    <link rel="stylesheet" href="./css/company-style.css" />
+  </head>
+  <body>
+    <div class="site-container">
+      <div class="header-container">
+        <div class="img-container">
+          <img src="" alt="" id="image" />
+        </div>
+        <h1><a id="header"></a></h1>
+      </div>
+      <div id="stock-container">
+        <h2 id="stock-price"></h2>
+        <h2 id="stock-change" class=""></h2>
+      </div>
+
+      <div class="description-container">
+        <span class="loader" id="loader"></span>
+        <p class="description" id="description"></p>
+      </div>
+      <canvas id="my-chart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="./js/scripts-company.js"></script>
+  </body>
+</html>
