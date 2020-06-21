@@ -1,15 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>ITC Template</title>
-  <meta name="description" content="Project Name">
-  <meta name="author" content="Fill in your name">
-  <link rel="stylesheet" href="./css/styles.css">
-</head>
-
-<body>
-  <script src="./js/scripts.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>ITC Template</title>
+    <meta name="description" content="Stock Exchange Market" />
+    <meta name="author" content="Yitzchak Siegel-Bareket" />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <div class="site-container">
+    <div class="search-container">
+      <form class="search-form" id="search-form">
+        <input
+          id="search-input"
+          class="search-input"
+          type="text"
+          placeholder="Search a Stock Here"
+        />
+        <button type="submit" class="search-button">Search</button>
+      </form>
+      <span class="loader" id="loader"></span>
+      <ul class="search-results-display" id="search-results-display"></ul>
+    </div>
+  </div>
+  <body>
+    <script src="./js/scripts.js"></script>
+  </body>
 </html>
