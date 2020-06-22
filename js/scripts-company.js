@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 let symbol = urlParams.get("symbol");
-let companyUrl = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=d0b2f081c9efa8ff0333ade3ed59ebfc`;
-let historyDataUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=d0b2f081c9efa8ff0333ade3ed59ebfc`;
+let companyUrl = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=ed93f3e229380c530b7a0e7663f86b99`;
+let historyDataUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=ed93f3e229380c530b7a0e7663f86b99`;
 const image = document.getElementById("image");
 const header = document.getElementById("header");
 const stockPrice = document.getElementById("stock-price");
