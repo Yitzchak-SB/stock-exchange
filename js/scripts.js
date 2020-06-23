@@ -4,7 +4,7 @@ const searchForm = document.getElementById("search-form");
 const loader = document.getElementById("loader");
 const marqueeHolder = document.getElementById("marquee-holder");
 
-const getMarquee = async () => {
+/*const getMarquee = async () => {
   let fragment = new DocumentFragment();
   let marqueeUrl =
     "https://financialmodelingprep.com/api/v3/quotes/nyse?apikey=ed93f3e229380c530b7a0e7663f86b99";
@@ -27,7 +27,7 @@ const getMarquee = async () => {
   }
   marqueeHolder.appendChild(fragment);
 };
-
+*/
 const getSearchResults = async () => {
   let stockUrl = `https://financialmodelingprep.com/api/v3/search?query=${searchInput.value.toUpperCase()}&limit=10&exchange=NASDAQ&apikey=ed93f3e229380c530b7a0e7663f86b99`;
 
@@ -78,8 +78,6 @@ const searchResultLayout = (searchResultImg, item) => {
 };
 
 let searchResultsData = {};
-
-getMarquee();
 
 searchForm.addEventListener("submit", async (event) => {
   searchResultsDisplay.innerHTML = "";
