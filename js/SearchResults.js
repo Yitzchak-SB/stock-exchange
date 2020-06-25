@@ -3,6 +3,22 @@ class Results {
     this.resultsElement = element;
     this.resultsData = null;
     this.counter = 0;
+    this.companyName = "";
+    this.symbol = "";
+  }
+
+  highlightSearch(string) {
+    let output = string;
+    let searchInput = document
+      .getElementById("search-input")
+      .value.toUpperCase();
+    let mark1 = "<mark>";
+    let mark2 = "</mark>";
+    if (string.includes(searchInput)) {
+      output = string.replace(searchInput, mark1 + searchInput + mark2);
+      console.log(output);
+    }
+    return output;
   }
 
   renderResults(object) {
@@ -15,7 +31,13 @@ class Results {
     const ul = document.createElement("ul");
     ul.className = "search-results-display";
     fragment.appendChild(ul);
+
     this.resultsData.map((item) => {
+      if (item.companyName === null && item.symbol === null) {
+        console.log(null);
+      }
+      item.companyName = this.highlightSearch(item.companyName);
+      item.symbol = this.highlightSearch(item.symbol);
       const li = document.createElement("li");
       const p = document.createElement("p");
       const img = document.createElement("img");
@@ -27,10 +49,10 @@ class Results {
       img.src = item.image;
       img.alt = item.companyName;
       li.appendChild(img);
+      a.innerHTML = item.companyName;
       a.href = `/company.html?symbol=${item.symbol}`;
-      a.innerText = item.companyName;
       li.appendChild(a);
-      p.innerText = item.symbol;
+      p.innerHTML = item.symbol;
       li.appendChild(p);
       span.innerText = item.changes;
 

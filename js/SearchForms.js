@@ -26,10 +26,6 @@ class SearchForm {
     this.formElement.appendChild(searchForm);
   }
 
-  createCompanyDetailsHTML(companyDetails) {
-    console.log("2", companyDetails);
-  }
-
   async onSearch(callback) {
     const searchForm = document.getElementById("search-form");
     const searchInput = document.getElementById("search-input");
