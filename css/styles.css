@@ -6,6 +6,7 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #d9d9d9;
@@ -17,7 +18,7 @@
   padding: 4px;
 }
 
-.search-container {
+#form {
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.589);
   margin-top: 3%;
   display: flex;

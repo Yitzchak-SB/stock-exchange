@@ -1,33 +1,8 @@
 const searchInput = document.getElementById("search-input");
-const searchResultsDisplay = document.getElementById("search-results-display");
+const results = document.getElementById("results");
 const searchForm = document.getElementById("search-form");
 const loader = document.getElementById("loader");
-const marqueeHolder = document.getElementById("marquee-holder");
-
-/*const getMarquee = async () => {
-  let fragment = new DocumentFragment();
-  let marqueeUrl =
-    "https://financialmodelingprep.com/api/v3/quotes/nyse?apikey=ed93f3e229380c530b7a0e7663f86b99";
-  const marqueeFetch = await fetch(marqueeUrl);
-  const marqueeData = await marqueeFetch.json();
-  for (let i = 0; i < marqueeData.length; i++) {
-    if (marqueeData[i].price == null && marqueeData[i].change == null) {
-      continue;
-    } else {
-      const span = document.createElement("span");
-      span.className = "marquee-card";
-      span.innerText =
-        marqueeData[i].symbol +
-        " " +
-        marqueeData[i].price +
-        " " +
-        marqueeData[i].change;
-      fragment.appendChild(span);
-    }
-  }
-  marqueeHolder.appendChild(fragment);
-};
-*/
+const searchResultsDisplay = document.getElementById("search-result-display");
 const getSearchResults = async () => {
   let stockUrl = `https://financialmodelingprep.com/api/v3/search?query=${searchInput.value.toUpperCase()}&limit=10&exchange=NASDAQ&apikey=ed93f3e229380c530b7a0e7663f86b99`;
 
@@ -49,14 +24,18 @@ const getSearchResultsImage = async () => {
 
 const searchResultLayout = (searchResultImg, item) => {
   let fragment = new DocumentFragment();
+  const ul = document.createElement("ul");
   const li = document.createElement("li");
   const p = document.createElement("p");
   const img = document.createElement("img");
   const a = document.createElement("a");
   const span = document.createElement("span");
 
+  ul.className = "search-results-display";
+  ul.id = "search-results-display";
+  fragment.appendChild(ul);
   li.className = "result-item";
-  fragment.appendChild(li);
+  ul.appendChild(li);
   img.className = "img-search";
   img.src = searchResultImg[0].image;
   img.alt = searchResultImg[0].name;
@@ -74,15 +53,9 @@ const searchResultLayout = (searchResultImg, item) => {
   }
   li.appendChild(span);
 
-  searchResultsDisplay.appendChild(fragment);
+  results.appendChild(fragment);
 };
 
 let searchResultsData = {};
 
-searchForm.addEventListener("submit", async (event) => {
-  searchResultsDisplay.innerHTML = "";
-  event.preventDefault();
-  searchResultsData = await getSearchResults();
-
-  getSearchResultsImage();
-});
+results.innerHTML = "";

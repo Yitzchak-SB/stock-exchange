@@ -10,27 +10,27 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
 
-  <div class="marquee">
+  <div id="marquee" class="marquee">
     <div id="marquee-holder"></div>
   </div>
-
   <div class="site-container">
-    <div class="search-container">
-      <form class="search-form" id="search-form">
-        <input
-          id="search-input"
-          class="search-input"
-          type="text"
-          placeholder="Search a Stock Here"
-        />
-        <button type="submit" class="search-button">Search</button>
-      </form>
-      <span class="loader" id="loader"></span>
-      <ul class="search-results-display" id="search-results-display"></ul>
-    </div>
+    <div id="form"></div>
+    <div class="results" id="results"></div>
   </div>
   <body>
-    <script src="./js/scripts.js"></script>
     <script src="./js/marquee.js"></script>
+    <script src="./js/SearchForms.js"></script>
+    <script src="./js/SearchResults.js"></script>
+    <script>
+      (async function () {
+        const marquee = new Marquee(document.getElementById("marquee"));
+        marquee.load();
+        const form = new SearchForm(document.getElementById("form"));
+        const results = new Results(document.getElementById("results"));
+        form.onSearch((companies) => {
+          results.renderResults(companies);
+        });
+      })();
+    </script>
   </body>
 </html>
