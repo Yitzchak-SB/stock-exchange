@@ -1,27 +1,46 @@
 class SearchForm {
   constructor(element) {
     this.formElement = element;
-    this.html = this.createElement();
+    this.html = this.generateForm();
   }
 
-  createElement() {
-    const searchForm = document.createElement("form");
-    const input = document.createElement("input");
-    const button = document.createElement("button");
-    const span = document.createElement("span");
-    searchForm.className = "search-form";
-    searchForm.id = "search-form";
-    input.id = "search-input";
-    input.className = "search-input";
-    input.type = "text";
+  createHtmlElement(element, className, id, type) {
+    const newElement = document.createElement(element);
+    if (className != undefined) {
+      newElement.className = className;
+    }
+    if (id != undefined) {
+      newElement.id = id;
+    }
+    if (type != undefined) {
+      newElement.type = type;
+    }
+    return newElement;
+  }
+
+  generateForm() {
+    const searchForm = this.createHtmlElement(
+      "form",
+      "search-form",
+      "search-form"
+    );
+    const input = this.createHtmlElement(
+      "input",
+      "search-input",
+      "search-input",
+      "text"
+    );
+    const button = this.createHtmlElement(
+      "button",
+      "search-button",
+      undefined,
+      "submit"
+    );
+    const span = this.createHtmlElement("span", "loader", "loader");
     input.placeholder = "Search a Stock Here";
     searchForm.appendChild(input);
-    button.type = "submit";
-    button.className = "search-button";
     button.innerText = "Search";
     searchForm.appendChild(button);
-    span.className = "loader";
-    span.id = "loader";
     searchForm.appendChild(span);
     this.formElement.appendChild(searchForm);
   }
@@ -30,7 +49,7 @@ class SearchForm {
     const searchForm = document.getElementById("search-form");
     const searchInput = document.getElementById("search-input");
 
-    const secondFetch = async (data) => {
+    const getSearchData = async (data) => {
       const finalResult = [];
       data.map(async (item, index) => {
         let resultsResponseUrl = `https://financialmodelingprep.com/api/v3/profile/${item.symbol}?apikey=ed93f3e229380c530b7a0e7663f86b99`;
@@ -50,7 +69,7 @@ class SearchForm {
       fetch(stockUrl)
         .then((response) => response.json())
         .then((data) => {
-          secondFetch(data);
+          getSearchData(data);
         });
     };
 

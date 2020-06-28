@@ -7,17 +7,34 @@ class Results {
     this.symbol = "";
   }
 
+  greenOrRed(element, value) {
+    if (value > 0) {
+      element.style.color = "green";
+    } else {
+      element.style.color = "red";
+    }
+  }
+
   highlightSearch(string) {
     let output = string;
     let searchInput = document
       .getElementById("search-input")
       .value.toUpperCase();
-    let mark1 = "<mark>";
-    let mark2 = "</mark>";
     if (string.includes(searchInput)) {
-      output = string.replace(searchInput, mark1 + searchInput + mark2);
+      output = string.replace(searchInput, `<mark>${searchInput}</mark>`);
     }
     return output;
+  }
+
+  createHtmlElement(element, className, innerHTML) {
+    const newElement = document.createElement(element);
+    if (className != undefined) {
+      newElement.className = className;
+    }
+    if (innerHTML != undefined) {
+      newElement.innerHTML = innerHTML;
+    }
+    return newElement;
   }
 
   renderResults(object) {
@@ -26,51 +43,43 @@ class Results {
       document.querySelector(".search-results-display").remove();
     }
     let fragment = new DocumentFragment();
-    const ul = document.createElement("ul");
+    const ul = this.createHtmlElement("ul", "search-results-display");
     this.counter++;
-    ul.className = "search-results-display";
     fragment.appendChild(ul);
 
+    this.createResultList(ul);
+    this.resultsElement.appendChild(fragment);
+  }
+
+  createResultList(element) {
     this.resultsData.map((item, index) => {
       if (item.companyName != null || item.symbol != null) {
         item.companyName = this.highlightSearch(item.companyName);
         let symbol = this.highlightSearch(item.symbol);
-        const li = document.createElement("li");
-        const p = document.createElement("p");
-        const img = document.createElement("img");
-        const a = document.createElement("a");
-        const span = document.createElement("span");
-        const button = document.createElement("button");
-        li.className = "result-item";
-        ul.appendChild(li);
-        img.className = "img-search";
+        const li = this.createHtmlElement("li", "result-item");
+        const p = this.createHtmlElement("p", undefined, symbol);
+        const img = this.createHtmlElement("img", "img-search");
         img.src = item.image;
         img.alt = item.companyName;
-        li.appendChild(img);
-        a.innerHTML = item.companyName;
+        const a = this.createHtmlElement("a", undefined, item.companyName);
         a.href = `/company.html?symbol=${item.symbol}`;
-        li.appendChild(a);
-        p.innerHTML = symbol;
-        li.appendChild(p);
+        const span = this.createHtmlElement("span");
         span.innerText = item.changes;
-
-        if (item.changes > 0) {
-          span.style.color = "green";
-        } else {
-          span.style.color = "red";
-        }
-        li.appendChild(span);
-
-        button.className = "compare-button";
+        this.greenOrRed(span, item.changes);
+        const button = this.createHtmlElement("button", "compare-button");
         button.id = `${index}`;
         button.innerText = "Compare";
         button.addEventListener("click", (event, item) => {
           item = this.resultsData;
           console.log(item[index]);
         });
+        element.appendChild(li);
+        li.appendChild(img);
+        li.appendChild(a);
+        li.appendChild(p);
+        li.appendChild(span);
         li.appendChild(button);
       }
     });
-    this.resultsElement.appendChild(fragment);
   }
 }
