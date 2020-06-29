@@ -19,30 +19,49 @@ class SearchForm {
   }
 
   generateForm() {
+    const compareDiv = this.createHtmlElement("div", "row pt-5 mb-5");
+    const compareContainer = this.createHtmlElement(
+      "div",
+      "col-12 row border border-black pt-3 pb-3 pr-0",
+      "compare-div"
+    );
+    const compareLink = this.createHtmlElement(
+      "a",
+      "col-3 text-primary float-right p-0 text-center",
+      "compare-link"
+    );
+    const formDiv = this.createHtmlElement("div", "row");
     const searchForm = this.createHtmlElement(
       "form",
-      "search-form",
+      "col-12 row form-inline",
       "search-form"
     );
     const input = this.createHtmlElement(
       "input",
-      "search-input",
+      "col-9 form-control",
       "search-input",
       "text"
     );
     const button = this.createHtmlElement(
       "button",
-      "search-button",
+      "col-3 btn btn-primary",
       undefined,
       "submit"
     );
     const span = this.createHtmlElement("span", "loader", "loader");
     input.placeholder = "Search a Stock Here";
+    compareLink.innerText = "Compare Companies";
+    compareLink.style = "cursor: pointer;";
+    compareContainer.style = "display: block";
+    compareDiv.appendChild(compareContainer);
+    compareContainer.appendChild(compareLink);
     searchForm.appendChild(input);
     button.innerText = "Search";
     searchForm.appendChild(button);
     searchForm.appendChild(span);
-    this.formElement.appendChild(searchForm);
+    formDiv.appendChild(searchForm);
+    document.getElementById("compare").appendChild(compareDiv);
+    this.formElement.appendChild(formDiv);
   }
 
   async onSearch(callback) {

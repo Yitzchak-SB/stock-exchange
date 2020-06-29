@@ -1,4 +1,6 @@
-class Results {
+import { CompareCompany } from "./CompareCompany.js";
+
+export class Results {
   constructor(element) {
     this.resultsElement = element;
     this.resultsData = null;
@@ -20,9 +22,12 @@ class Results {
     let searchInput = document
       .getElementById("search-input")
       .value.toUpperCase();
-    if (string.includes(searchInput)) {
-      output = string.replace(searchInput, `<mark>${searchInput}</mark>`);
+    if (string != null) {
+      if (string.includes(searchInput)) {
+        output = string.replace(searchInput, `<mark>${searchInput}</mark>`);
+      }
     }
+
     return output;
   }
 
@@ -40,10 +45,10 @@ class Results {
   renderResults(object) {
     this.resultsData = object;
     if (this.counter > 0) {
-      document.querySelector(".search-results-display").remove();
+      document.querySelector(".list-group").remove();
     }
     let fragment = new DocumentFragment();
-    const ul = this.createHtmlElement("ul", "search-results-display");
+    const ul = this.createHtmlElement("ul", "list-group");
     this.counter++;
     fragment.appendChild(ul);
 
@@ -56,22 +61,36 @@ class Results {
       if (item.companyName != null || item.symbol != null) {
         item.companyName = this.highlightSearch(item.companyName);
         let symbol = this.highlightSearch(item.symbol);
-        const li = this.createHtmlElement("li", "result-item");
-        const p = this.createHtmlElement("p", undefined, symbol);
-        const img = this.createHtmlElement("img", "img-search");
+        const li = this.createHtmlElement(
+          "li",
+          "list-group-item row justify-content-around results-item"
+        );
+        const p = this.createHtmlElement("span", "col-3", symbol);
+        const img = this.createHtmlElement("img", "col-3");
         img.src = item.image;
         img.alt = item.companyName;
-        const a = this.createHtmlElement("a", undefined, item.companyName);
+        const a = this.createHtmlElement(
+          "a",
+          "col-5",
+          undefined,
+          item.companyName
+        );
         a.href = `/company.html?symbol=${item.symbol}`;
-        const span = this.createHtmlElement("span");
+        const span = this.createHtmlElement("span", "col-2");
         span.innerText = item.changes;
         this.greenOrRed(span, item.changes);
-        const button = this.createHtmlElement("button", "compare-button");
-        button.id = `${index}`;
+        const button = this.createHtmlElement(
+          "button",
+          "btn btn-primary col-2 comp-btn"
+        );
+        button.id = `button-${index}`;
         button.innerText = "Compare";
-        button.addEventListener("click", (event, item) => {
-          item = this.resultsData;
-          console.log(item[index]);
+        button.addEventListener("click", (event, companyItem) => {
+          button.disabled = true;
+          item = this.resultsData[index];
+          const CompareItem = new CompareCompany(item, button);
+          CompareItem.createSpan(item, index);
+          CompareCompany.displayData();
         });
         element.appendChild(li);
         li.appendChild(img);
@@ -80,6 +99,26 @@ class Results {
         li.appendChild(span);
         li.appendChild(button);
       }
+    });
+  }
+
+  compareCompanies(item) {
+    const compareDiv = document.getElementById("compare-div");
+    const compareName = this.createHtmlElement(
+      "span",
+      "m-1 p-1 bg-primary text-white col-2 rounded",
+      Results.compareIndex
+    );
+    compareName.style = "cursor: pointer;";
+    const spanName = this.createHtmlElement("span", "pr-5");
+    spanName.innerText = item[index].symbol;
+    const spanX = this.createHtmlElement("span");
+    spanX.innerText = "X";
+    compareName.appendChild(spanName);
+    compareName.appendChild(spanX);
+    compareDiv.appendChild(compareName);
+    compareName.addEventListener("click", () => {
+      compareDiv.removeChild(compareName);
     });
   }
 }

@@ -4,18 +4,37 @@ class Marquee {
     this.marqueeInfo = null;
   }
 
+  greenOrRed(element, value) {
+    if (value > 0) {
+      element.style.color = "green";
+    } else {
+      element.style.color = "red";
+    }
+  }
+
   createMarquee() {
     let fragment = new DocumentFragment();
-
-    const div = document.createElement("div");
-    div.className = "marquee-holder";
-    fragment.appendChild(div);
+    const metaDiv = document.createElement("div");
+    metaDiv.className = "marquee-holder row";
+    fragment.appendChild(metaDiv);
 
     this.marqueeInfo.map((item) => {
-      const span = document.createElement("span");
-      span.className = "marquee-card";
-      span.innerText = `${item.symbol} ${item.price} ${item.change}`;
-      div.appendChild(span);
+      const div = document.createElement("div");
+      div.className = "marquee-card col-1";
+      metaDiv.appendChild(div);
+      const spanSymbol = document.createElement("span");
+      spanSymbol.className = "text-info";
+      spanSymbol.innerText = item.symbol;
+      const spanPrice = document.createElement("span");
+      spanPrice.className = "marquee-price";
+      spanPrice.innerText = item.price;
+      const spanChange = document.createElement("span");
+      spanChange.className = "marquee-change";
+      spanChange.innerText = item.change;
+      this.greenOrRed(spanChange, item.change);
+      div.appendChild(spanSymbol);
+      div.appendChild(spanPrice);
+      div.appendChild(spanChange);
     });
     this.marqueeElement.appendChild(fragment);
   }
