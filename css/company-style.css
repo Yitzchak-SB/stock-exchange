@@ -14,41 +14,6 @@ h2 {
   display: inline;
 }
 
-.site-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-}
-
-.image-container {
-  width: 250px;
-  height: 250px;
-}
-
-.image-container img {
-  object-fit: contain;
-}
-
-.stock-container {
-  display: flex;
-}
-
-.text-red {
-  color: red;
-}
-
-.text-green {
-  color: green;
-}
-
-.description-container {
-  max-width: 40%;
-}
-
 .loader {
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #3498db; /* Blue */

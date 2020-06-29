@@ -20,13 +20,13 @@ class Marquee {
 
     this.marqueeInfo.map((item) => {
       const div = document.createElement("div");
-      div.className = "marquee-card col-1";
+      div.className = "marquee-card col pr-5 mr-5 ml-5 pl-5";
       metaDiv.appendChild(div);
       const spanSymbol = document.createElement("span");
-      spanSymbol.className = "text-info";
+      spanSymbol.className = "text-info pr-2";
       spanSymbol.innerText = item.symbol;
       const spanPrice = document.createElement("span");
-      spanPrice.className = "marquee-price";
+      spanPrice.className = "marquee-price pr-2";
       spanPrice.innerText = item.price;
       const spanChange = document.createElement("span");
       spanChange.className = "marquee-change";

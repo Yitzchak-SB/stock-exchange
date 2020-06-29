@@ -52,6 +52,7 @@ class SearchForm {
     input.placeholder = "Search a Stock Here";
     compareLink.innerText = "Compare Companies";
     compareLink.style = "cursor: pointer;";
+    compareLink.href = "/company.html?symbols=";
     compareContainer.style = "display: block";
     compareDiv.appendChild(compareContainer);
     compareContainer.appendChild(compareLink);

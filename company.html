@@ -7,19 +7,28 @@
     <meta name="description" content="Stock Exchange Market" />
     <meta name="author" content="Yitzchak Siegel-Bareket" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./css/company-style.css" />
   </head>
   <body>
-    <div id="comp-info" class="site-container"></div>
+    <div id="comp-info" class="site-container">
+      <h1>Compare Stocks:</h1>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="./js/CompanyInfo.js"></script>
-    <script>
+    <script type="module" src="./js/CompanyInfo.js"></script>
+    <script type="module">
+      import { CompanyInfo } from "./js/CompanyInfo.js";
       (async function () {
         const params = new URLSearchParams(location.search);
-        const symbol = params.get("symbol");
+        const symbols = params.get("symbols");
         const compInfo = new CompanyInfo(
           document.getElementById("comp-info"),
-          symbol
+          symbols
         );
         await compInfo.load();
         await compInfo.addChart();

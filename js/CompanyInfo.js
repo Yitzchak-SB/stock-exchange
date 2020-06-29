@@ -1,8 +1,17 @@
-class CompanyInfo {
+export class CompanyInfo {
   constructor(element, symbol) {
     this.element = element;
-    this.companyUrl = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=ed93f3e229380c530b7a0e7663f86b99`;
-    this.historyDataUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?serietype=line&apikey=ed93f3e229380c530b7a0e7663f86b99`;
+    this.symbol = symbol;
+    this.symbolsList = this.createSymbolList();
+  }
+
+  createSymbolList() {
+    if (this.symbol != null) {
+      return this.symbol.split(", ");
+    } else {
+      const params = new URLSearchParams(location.search);
+      return [params.get("symbol"), ""];
+    }
   }
 
   greenOrRed(element, value) {
@@ -27,23 +36,28 @@ class CompanyInfo {
     return newElement;
   }
 
-  renderCompany(data) {
+  async renderCompany(data) {
+    const card = this.createHtmlElement(
+      "div",
+      "card shadow-lg col m-4 p-4",
+      `card-${data[0].symbol}`
+    );
     const headerContainer = this.createHtmlElement(
       "div",
-      "header-container",
+      "header-container row",
       undefined
     );
-    const imgContainer = this.createHtmlElement("div", "img-container");
+    const imgContainer = this.createHtmlElement("div", "img-container col-6");
     const image = this.createHtmlElement("img", undefined, "image");
     const header = this.createHtmlElement(
-      "a",
-      "header",
+      "h3",
+      "header row text-primary p-3",
       "header",
       data[0].companyName
     );
     const stockContainer = this.createHtmlElement(
       "div",
-      "stock-container",
+      "stock-container row",
       "stock-container"
     );
     const stockPrice = this.createHtmlElement(
@@ -60,7 +74,7 @@ class CompanyInfo {
     );
     const descriptionContainer = this.createHtmlElement(
       "div",
-      "description-container",
+      "description-container row",
       "description-container"
     );
     const loader = this.createHtmlElement("span", "loader", "loader");
@@ -81,23 +95,32 @@ class CompanyInfo {
     stockContainer.appendChild(stockPrice);
     stockContainer.appendChild(stockChange);
     imgContainer.appendChild(image);
-    headerContainer.appendChild(imgContainer);
     headerContainer.appendChild(header);
-    this.element.appendChild(headerContainer);
-    this.element.appendChild(stockContainer);
-    this.element.appendChild(descriptionContainer);
+    headerContainer.appendChild(imgContainer);
+    descriptionContainer.appendChild(description);
+    card.appendChild(headerContainer);
+    card.appendChild(stockContainer);
+    card.appendChild(descriptionContainer);
+    document.getElementById("row-div").appendChild(card);
   }
 
   async getProfileData() {
-    const companyProfileRes = await fetch(this.companyUrl);
-    const companyProfile = await companyProfileRes.json();
-    const historyDataRes = await fetch(this.historyDataUrl);
-    const historyData = await historyDataRes.json();
-    this.renderCompany(companyProfile);
-    this.addChart(historyData);
+    this.symbolsList.map(async (item) => {
+      let companyUrl = `https://financialmodelingprep.com/api/v3/profile/${item}?apikey=ed93f3e229380c530b7a0e7663f86b99`;
+      let historyDataUrl = `https://financialmodelingprep.com/api/v3/historical-price-full/${item}?serietype=line&apikey=ed93f3e229380c530b7a0e7663f86b99`;
+      const companyProfileRes = await fetch(companyUrl);
+      const companyProfile = await companyProfileRes.json();
+      const historyDataRes = await fetch(historyDataUrl);
+      const historyData = await historyDataRes.json();
+      this.renderCompany(await companyProfile);
+      this.addChart(await historyData);
+      console.log(historyData);
+    });
   }
 
   load() {
+    const rowDiv = this.createHtmlElement("div", "row", "row-div");
+    this.element.appendChild(rowDiv);
     this.getProfileData();
   }
 
@@ -116,7 +139,7 @@ class CompanyInfo {
     }
 
     const ctx = this.createHtmlElement("canvas", "my-chart", "my-chart");
-    this.element.appendChild(ctx);
+    document.getElementById(`card-${historyData.symbol}`).appendChild(ctx);
     ctx.getContext("2d");
     let chart = new Chart(ctx, {
       // The type of chart we want to create
@@ -127,7 +150,7 @@ class CompanyInfo {
         labels: chartLabels,
         datasets: [
           {
-            label: "",
+            label: historyData.symbol,
             backgroundColor: "rgb(255, 99, 132)",
             borderColor: "rgb(255, 99, 132)",
             data: chartDatasets,

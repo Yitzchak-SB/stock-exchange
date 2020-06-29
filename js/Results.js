@@ -33,12 +33,13 @@ export class Results {
 
   createHtmlElement(element, className, innerHTML) {
     const newElement = document.createElement(element);
-    if (className != undefined) {
-      newElement.className = className;
-    }
     if (innerHTML != undefined) {
       newElement.innerHTML = innerHTML;
     }
+    if (className != undefined) {
+      newElement.className = className;
+    }
+
     return newElement;
   }
 
@@ -57,24 +58,20 @@ export class Results {
   }
 
   createResultList(element) {
-    this.resultsData.map((item, index) => {
+    const companyData = this.resultsData;
+    companyData.map((item, index) => {
       if (item.companyName != null || item.symbol != null) {
-        item.companyName = this.highlightSearch(item.companyName);
+        let companyName = this.highlightSearch(item.companyName);
         let symbol = this.highlightSearch(item.symbol);
         const li = this.createHtmlElement(
           "li",
           "list-group-item row justify-content-around results-item"
         );
-        const p = this.createHtmlElement("span", "col-3", symbol);
+        const p = this.createHtmlElement("span", "col-3", `${symbol}`);
         const img = this.createHtmlElement("img", "col-3");
         img.src = item.image;
         img.alt = item.companyName;
-        const a = this.createHtmlElement(
-          "a",
-          "col-5",
-          undefined,
-          item.companyName
-        );
+        const a = this.createHtmlElement("a", "col-5", companyName);
         a.href = `/company.html?symbol=${item.symbol}`;
         const span = this.createHtmlElement("span", "col-2");
         span.innerText = item.changes;
@@ -85,12 +82,11 @@ export class Results {
         );
         button.id = `button-${index}`;
         button.innerText = "Compare";
-        button.addEventListener("click", (event, companyItem) => {
-          button.disabled = true;
+        button.addEventListener("click", () => {
           item = this.resultsData[index];
+          button.disabled = true;
           const CompareItem = new CompareCompany(item, button);
           CompareItem.createSpan(item, index);
-          CompareCompany.displayData();
         });
         element.appendChild(li);
         li.appendChild(img);

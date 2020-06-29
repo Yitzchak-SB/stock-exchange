@@ -7,11 +7,7 @@ export class CompareCompany {
     this.index = CompareCompany.compareIndex;
   }
 
-  static displayData() {
-    console.log(CompareCompany.dataHolder);
-  }
-
-  createSpan(item, index) {
+  createSpan(item) {
     const compareDiv = document.getElementById("compare-div");
     const compareName = this.createHtmlElement(
       "span",
@@ -28,6 +24,13 @@ export class CompareCompany {
     compareName.appendChild(spanName);
     compareName.appendChild(spanX);
     compareDiv.appendChild(compareName);
+    const compareLink = document.getElementById("compare-link");
+    if (compareLink.href[compareLink.href.length - 1] === "=") {
+      compareLink.href += item.symbol;
+    } else {
+      compareLink.href += `, ${item.symbol}`;
+    }
+
     compareName.addEventListener("click", () => {
       this.removeSpan(compareName);
     });
@@ -37,7 +40,6 @@ export class CompareCompany {
     const compareDiv = document.getElementById("compare-div");
     compareDiv.removeChild(compareName);
     delete CompareCompany.dataHolder[this.companyData.symbol];
-    CompareCompany.displayData();
     this.element.disabled = false;
   }
 
