@@ -1,20 +1,12 @@
 import { CompareCompany } from "./CompareCompany.js";
+import { createHtmlElement, greenOrRed } from "./module.js";
 
 export class Results {
   constructor(element) {
     this.resultsElement = element;
     this.resultsData = null;
-    this.counter = 0;
     this.companyName = "";
     this.symbol = "";
-  }
-
-  greenOrRed(element, value) {
-    if (value > 0) {
-      element.style.color = "green";
-    } else {
-      element.style.color = "red";
-    }
   }
 
   highlightSearch(string) {
@@ -31,26 +23,13 @@ export class Results {
     return output;
   }
 
-  createHtmlElement(element, className, innerHTML) {
-    const newElement = document.createElement(element);
-    if (innerHTML != undefined) {
-      newElement.innerHTML = innerHTML;
-    }
-    if (className != undefined) {
-      newElement.className = className;
-    }
-
-    return newElement;
-  }
-
   renderResults(object) {
     this.resultsData = object;
-    if (this.counter > 0) {
+    if (document.querySelector(".list-group")) {
       document.querySelector(".list-group").remove();
     }
     let fragment = new DocumentFragment();
-    const ul = this.createHtmlElement("ul", "list-group");
-    this.counter++;
+    const ul = createHtmlElement("ul", "list-group list-group-flush");
     fragment.appendChild(ul);
 
     this.createResultList(ul);
@@ -63,25 +42,41 @@ export class Results {
       if (item.companyName != null || item.symbol != null) {
         let companyName = this.highlightSearch(item.companyName);
         let symbol = this.highlightSearch(item.symbol);
-        const li = this.createHtmlElement(
+        const li = createHtmlElement(
           "li",
           "list-group-item row justify-content-around results-item"
         );
-        const p = this.createHtmlElement("span", "col-3", `${symbol}`);
-        const img = this.createHtmlElement("img", "col-3");
+        const p = createHtmlElement(
+          "span",
+          "col-3",
+          undefined,
+          undefined,
+          `${symbol}`
+        );
+        const img = createHtmlElement("img", "col-3");
         img.src = item.image;
         img.alt = item.companyName;
-        const a = this.createHtmlElement("a", "col-5", companyName);
-        a.href = `/company.html?symbol=${item.symbol}`;
-        const span = this.createHtmlElement("span", "col-2");
-        span.innerText = item.changes;
-        this.greenOrRed(span, item.changes);
-        const button = this.createHtmlElement(
-          "button",
-          "btn btn-primary col-2 comp-btn"
+        const a = createHtmlElement(
+          "a",
+          "col-5",
+          undefined,
+          undefined,
+          companyName
         );
-        button.id = `button-${index}`;
-        button.innerText = "Compare";
+        a.href = `/company.html?symbol=${item.symbol}`;
+        const span = createHtmlElement(
+          "span",
+          "col-2",
+          undefined,
+          item.changes
+        );
+        greenOrRed(span, item.changes);
+        const button = createHtmlElement(
+          "button",
+          "btn btn-primary col-2 comp-btn",
+          `button-${index}`,
+          "Compare"
+        );
         button.addEventListener("click", () => {
           item = this.resultsData[index];
           button.disabled = true;
@@ -100,16 +95,21 @@ export class Results {
 
   compareCompanies(item) {
     const compareDiv = document.getElementById("compare-div");
-    const compareName = this.createHtmlElement(
+    const compareName = createHtmlElement(
       "span",
       "m-1 p-1 bg-primary text-white col-2 rounded",
+      undefined,
+      undefined,
       Results.compareIndex
     );
     compareName.style = "cursor: pointer;";
-    const spanName = this.createHtmlElement("span", "pr-5");
-    spanName.innerText = item[index].symbol;
-    const spanX = this.createHtmlElement("span");
-    spanX.innerText = "X";
+    const spanName = createHtmlElement(
+      "span",
+      "pr-5",
+      undefined,
+      item[index].symbol
+    );
+    const spanX = createHtmlElement("span", undefined, undefined, "x");
     compareName.appendChild(spanName);
     compareName.appendChild(spanX);
     compareDiv.appendChild(compareName);

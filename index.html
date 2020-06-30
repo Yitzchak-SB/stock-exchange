@@ -24,12 +24,15 @@
     <div id="results"></div>
   </div>
   <body>
+    <script src="./js/module.js" type="module"></script>
     <script src="./js/CompareCompany.js" type="module"></script>
-    <script src="./js/Marquee.js"></script>
-    <script src="./js/SearchForm.js"></script>
+    <script src="./js/Marquee.js" type="module"></script>
+    <script src="./js/SearchForm.js" type="module"></script>
     <script src="./js/Results.js" type="module"></script>
     <script type="module">
       import { Results } from "./js/Results.js";
+      import { Marquee } from "./js/Marquee.js";
+      import { SearchForm } from "./js/SearchForm.js";
       (async function () {
         const marquee = new Marquee(document.getElementById("marquee"));
         marquee.load();

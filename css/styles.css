@@ -33,6 +33,7 @@
 }
 
 .results-item > img {
+  min-height: 75px;
   width: 150px;
 }
 

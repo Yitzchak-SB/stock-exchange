@@ -1,41 +1,45 @@
-class Marquee {
+import { createHtmlElement, greenOrRed } from "./module.js";
+
+export class Marquee {
   constructor(element) {
     this.marqueeElement = element;
     this.marqueeInfo = null;
   }
 
-  greenOrRed(element, value) {
-    if (value > 0) {
-      element.style.color = "green";
-    } else {
-      element.style.color = "red";
-    }
-  }
-
   createMarquee() {
     let fragment = new DocumentFragment();
-    const metaDiv = document.createElement("div");
-    metaDiv.className = "marquee-holder row";
+    const metaDiv = createHtmlElement("div", "marquee-holder row");
     fragment.appendChild(metaDiv);
 
-    this.marqueeInfo.map((item) => {
-      const div = document.createElement("div");
-      div.className = "marquee-card col pr-5 mr-5 ml-5 pl-5";
+    for (let i = 0; i < this.marqueeInfo.length; i++) {
+      const div = createHtmlElement(
+        "div",
+        "marquee-card col pr-5 mr-5 ml-5 pl-5"
+      );
       metaDiv.appendChild(div);
-      const spanSymbol = document.createElement("span");
-      spanSymbol.className = "text-info pr-2";
-      spanSymbol.innerText = item.symbol;
-      const spanPrice = document.createElement("span");
-      spanPrice.className = "marquee-price pr-2";
-      spanPrice.innerText = item.price;
-      const spanChange = document.createElement("span");
-      spanChange.className = "marquee-change";
-      spanChange.innerText = item.change;
-      this.greenOrRed(spanChange, item.change);
+      const spanSymbol = createHtmlElement(
+        "span",
+        "text-info pr-2",
+        undefined,
+        this.marqueeInfo[i].symbol
+      );
+      const spanPrice = createHtmlElement(
+        "span",
+        "marquee-price pr-2",
+        undefined,
+        this.marqueeInfo[i].price
+      );
+      const spanChange = createHtmlElement(
+        "span",
+        "marquee-change",
+        undefined,
+        this.marqueeInfo[i].change
+      );
+      greenOrRed(spanChange, this.marqueeInfo[i].change);
       div.appendChild(spanSymbol);
       div.appendChild(spanPrice);
       div.appendChild(spanChange);
-    });
+    }
     this.marqueeElement.appendChild(fragment);
   }
 

@@ -1,3 +1,5 @@
+import { createHtmlElement, greenOrRed } from "./module.js";
+
 export class CompanyInfo {
   constructor(element, symbol) {
     this.element = element;
@@ -14,71 +16,49 @@ export class CompanyInfo {
     }
   }
 
-  greenOrRed(element, value) {
-    if (value > 0) {
-      element.style.color = "green";
-    } else {
-      element.style.color = "red";
-    }
-  }
-
-  createHtmlElement(element, className, id, innerText) {
-    const newElement = document.createElement(element);
-    if (className != undefined) {
-      newElement.className = className;
-    }
-    if (id != undefined) {
-      newElement.id = id;
-    }
-    if (innerText != undefined) {
-      newElement.innerText = innerText;
-    }
-    return newElement;
-  }
-
   async renderCompany(data) {
-    const card = this.createHtmlElement(
+    const card = createHtmlElement(
       "div",
       "card shadow-lg col m-4 p-4",
       `card-${data[0].symbol}`
     );
-    const headerContainer = this.createHtmlElement(
+    const headerContainer = createHtmlElement(
       "div",
       "header-container row",
       undefined
     );
-    const imgContainer = this.createHtmlElement("div", "img-container col-6");
-    const image = this.createHtmlElement("img", undefined, "image");
-    const header = this.createHtmlElement(
+    const imgContainer = createHtmlElement("div", "img-container col-6");
+    const image = createHtmlElement("img", undefined, "image");
+    const header = createHtmlElement(
       "h3",
       "header row text-primary p-3",
       "header",
       data[0].companyName
     );
-    const stockContainer = this.createHtmlElement(
+    const stockContainer = createHtmlElement(
       "div",
       "stock-container row",
       "stock-container"
     );
-    const stockPrice = this.createHtmlElement(
+    const stockPrice = createHtmlElement(
       "h2",
       "stock-price",
       "stock-price",
       `Stock Price: $${data[0].price}`
     );
-    const stockChange = this.createHtmlElement(
+    const stockChange = createHtmlElement(
       "h2",
       "stock-change",
       "stock-change",
       `(${data[0].changes})`
     );
-    const descriptionContainer = this.createHtmlElement(
+    const descriptionContainer = createHtmlElement(
       "div",
       "description-container row",
       "description-container"
     );
-    const loader = this.createHtmlElement("span", "loader", "loader");
-    const description = this.createHtmlElement(
+    const loader = createHtmlElement("span", "loader", "loader");
+    const description = createHtmlElement(
       "p",
       "description",
       "description",
@@ -89,7 +69,7 @@ export class CompanyInfo {
     image.alt = data[0].companyName;
     header.href = data[0].website;
 
-    this.greenOrRed(stockChange, data[0].changes);
+    greenOrRed(stockChange, data[0].changes);
 
     descriptionContainer.appendChild(loader);
     stockContainer.appendChild(stockPrice);
@@ -114,12 +94,11 @@ export class CompanyInfo {
       const historyData = await historyDataRes.json();
       this.renderCompany(await companyProfile);
       this.addChart(await historyData);
-      console.log(historyData);
     });
   }
 
   load() {
-    const rowDiv = this.createHtmlElement("div", "row", "row-div");
+    const rowDiv = createHtmlElement("div", "row", "row-div");
     this.element.appendChild(rowDiv);
     this.getProfileData();
   }
@@ -138,7 +117,7 @@ export class CompanyInfo {
       chartDatasets.push(historyData.historical[i].close);
     }
 
-    const ctx = this.createHtmlElement("canvas", "my-chart", "my-chart");
+    const ctx = createHtmlElement("canvas", "my-chart", "my-chart");
     document.getElementById(`card-${historyData.symbol}`).appendChild(ctx);
     ctx.getContext("2d");
     let chart = new Chart(ctx, {
