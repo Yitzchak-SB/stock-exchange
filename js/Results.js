@@ -9,11 +9,9 @@ export class Results {
     this.symbol = "";
   }
 
-  highlightSearch(string) {
+  highlightSearch(string, searchTerm) {
     let output = string;
-    let searchInput = document
-      .getElementById("search-input")
-      .value.toUpperCase();
+    let searchInput = searchTerm.toUpperCase();
     if (string != null) {
       if (string.includes(searchInput)) {
         output = string.replace(searchInput, `<mark>${searchInput}</mark>`);
@@ -23,7 +21,7 @@ export class Results {
     return output;
   }
 
-  renderResults(object) {
+  renderResults(object, searchTerm) {
     this.resultsData = object;
     if (document.querySelector(".list-group")) {
       document.querySelector(".list-group").remove();
@@ -32,16 +30,19 @@ export class Results {
     const ul = createHtmlElement("ul", "list-group list-group-flush");
     fragment.appendChild(ul);
 
-    this.createResultList(ul);
+    this.createResultList(ul, searchTerm);
     this.resultsElement.appendChild(fragment);
   }
 
-  createResultList(element) {
+  createResultList(element, searchTerm) {
     const companyData = this.resultsData;
     companyData.map((item, index) => {
       if (item.companyName != null || item.symbol != null) {
-        let companyName = this.highlightSearch(item.profile.companyName);
-        let symbol = this.highlightSearch(item.symbol);
+        let companyName = this.highlightSearch(
+          item.profile.companyName,
+          searchTerm
+        );
+        let symbol = this.highlightSearch(item.symbol, searchTerm);
         const li = createHtmlElement(
           "li",
           "list-group-item row justify-content-around results-item"

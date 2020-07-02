@@ -41,6 +41,13 @@
         form.onSearch((companies) => {
           results.renderResults(companies);
         });
+        const params = new URLSearchParams(location.search);
+        const query = params.get("query");
+        if (query) {
+          form.getSearchResult(query, (companies) => {
+            results.renderResults(companies, query);
+          });
+        }
       })();
     </script>
   </body>

@@ -99,8 +99,7 @@ export class SearchForm {
     });
   }
 */
-  async getSearchResult(callback) {
-    const searchInput = document.getElementById("search-input").value;
+  async getSearchResult(searchInput, callback) {
     if (searchInput === "") {
       if (document.querySelector(".list-group")) {
         document.querySelector(".list-group").remove();
@@ -119,23 +118,25 @@ export class SearchForm {
       `http://localhost:3000/search?query=${searchInput}`
     );
     const data = await response.json();
-    callback(data);
+    callback(data, searchInput);
   }
 
   async onSearch(callback) {
     const searchForm = document.getElementById("search-form");
     let debounceTimeout;
     searchForm.addEventListener("keyup", () => {
+      const searchInput = document.getElementById("search-input").value;
       if (debounceTimeout) {
         clearTimeout(debounceTimeout);
       }
       debounceTimeout = setTimeout(() => {
-        this.getSearchResult(callback);
+        this.getSearchResult(searchInput, callback);
       }, 500);
       searchForm.addEventListener("submit", (event) => {
+        const searchInput = document.getElementById("search-input").value;
         event.preventDefault();
         clearTimeout(debounceTimeout);
-        this.getSearchResult(callback);
+        this.getSearchResult(searchInput, callback);
       });
     });
   }

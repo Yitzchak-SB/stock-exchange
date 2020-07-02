@@ -29,8 +29,10 @@ export class SearchHistory {
         undefined,
         `Search Term: ${searchData.searchedQuery}, Made On: ${searchData.date}`
       );
-      li.href = `index.html/search?query=${searchData.searchedQuery}`;
-      li.appendChild(p);
+      const a = createHtmlElement("a");
+      a.href = `../index.html?query=${searchData.searchedQuery}`;
+      a.appendChild(p);
+      li.appendChild(a);
       ul.appendChild(li);
     }
     this.element.appendChild(ul);
