@@ -40,7 +40,7 @@ export class Results {
     const companyData = this.resultsData;
     companyData.map((item, index) => {
       if (item.companyName != null || item.symbol != null) {
-        let companyName = this.highlightSearch(item.companyName);
+        let companyName = this.highlightSearch(item.profile.companyName);
         let symbol = this.highlightSearch(item.symbol);
         const li = createHtmlElement(
           "li",
@@ -54,8 +54,8 @@ export class Results {
           `${symbol}`
         );
         const img = createHtmlElement("img", "col-3");
-        img.src = item.image;
-        img.alt = item.companyName;
+        img.src = item.profile.image;
+        img.alt = item.profile.companyName;
         const a = createHtmlElement(
           "a",
           "col-5",
@@ -68,7 +68,7 @@ export class Results {
           "span",
           "col-2",
           undefined,
-          item.changes
+          item.profile.changes
         );
         greenOrRed(span, item.changes);
         const button = createHtmlElement(

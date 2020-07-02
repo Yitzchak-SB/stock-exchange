@@ -24,6 +24,14 @@ export class SearchForm {
   }
 
   generateForm() {
+    const searchHistoryDiv = createHtmlElement("div", "row pt-5 mb-5");
+    const searchHistoryLink = createHtmlElement(
+      "a",
+      "bg-primary text-white col-2 p-3 rounded",
+      undefined,
+      "Search History"
+    );
+    searchHistoryLink.href = "./search-history.html";
     const compareDiv = createHtmlElement("div", "row pt-5 mb-5");
     const compareContainer = createHtmlElement(
       "div",
@@ -63,16 +71,18 @@ export class SearchForm {
     compareLink.style = "cursor: pointer;";
     compareLink.href = "/company.html?symbols=";
     compareContainer.style = "display: block";
+    searchHistoryDiv.appendChild(searchHistoryLink);
     compareDiv.appendChild(compareContainer);
     compareContainer.appendChild(compareLink);
     searchForm.appendChild(input);
     searchForm.appendChild(button);
     searchForm.appendChild(span);
     formDiv.appendChild(searchForm);
+    document.getElementById("compare").appendChild(searchHistoryDiv);
     document.getElementById("compare").appendChild(compareDiv);
     this.formElement.appendChild(formDiv);
   }
-
+  /*
   async getSearchData(data, callback) {
     const form = document.getElementById("form");
     this.createSpinner(form);
@@ -88,24 +98,28 @@ export class SearchForm {
       }
     });
   }
-
-  getSearchResult(callback) {
+*/
+  async getSearchResult(callback) {
     const searchInput = document.getElementById("search-input").value;
     if (searchInput === "") {
       if (document.querySelector(".list-group")) {
         document.querySelector(".list-group").remove();
       }
-
       return;
     }
-
+    /*
     let stockUrl = `https://financialmodelingprep.com/api/v3/search?query=${searchInput.toUpperCase()}&limit=10&exchange=NASDAQ&apikey=ed93f3e229380c530b7a0e7663f86b99`;
-    loader.classList.add("active");
     fetch(stockUrl)
       .then((response) => response.json())
       .then((data) => {
         this.getSearchData(data, callback);
-      });
+      });*/
+
+    const response = await fetch(
+      `http://localhost:3000/search?query=${searchInput}`
+    );
+    const data = await response.json();
+    callback(data);
   }
 
   async onSearch(callback) {

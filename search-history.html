@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ITC Template</title>
+    <meta name="description" content="Stock Exchange Market" />
+    <meta name="author" content="Yitzchak Siegel-Bareket" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="search-history" class="container">
+      <h1>Search History:</h1>
+    </div>
+    <script src="./js/module.js" type="module"></script>
+    <script src="./js/SearchHistory.js" type="module"></script>
+    <script type="module">
+      import { SearchHistory } from "./js/SearchHistory.js";
+      (async function () {
+        const searchHistory = new SearchHistory(
+          document.getElementById("search-history")
+        );
+        await searchHistory.getHistoryData();
+        await searchHistory.load();
+      })();
+    </script>
+  </body>
+</html>
