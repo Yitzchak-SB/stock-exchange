@@ -82,23 +82,7 @@ export class SearchForm {
     document.getElementById("compare").appendChild(compareDiv);
     this.formElement.appendChild(formDiv);
   }
-  /*
-  async getSearchData(data, callback) {
-    const form = document.getElementById("form");
-    this.createSpinner(form);
-    const finalResult = [];
-    data.map(async (item, index) => {
-      let resultsResponseUrl = `https://financialmodelingprep.com/api/v3/profile/${item.symbol}?apikey=ed93f3e229380c530b7a0e7663f86b99`;
-      let searchResultFetch = await fetch(resultsResponseUrl);
-      let searchResultImg = await searchResultFetch.json();
-      finalResult.push(searchResultImg[0]);
-      if (index === data.length - 1) {
-        this.deleteSpinner();
-        callback(finalResult);
-      }
-    });
-  }
-*/
+
   async getSearchResult(searchInput, callback) {
     if (searchInput === "") {
       if (document.querySelector(".list-group")) {
@@ -106,13 +90,6 @@ export class SearchForm {
       }
       return;
     }
-    /*
-    let stockUrl = `https://financialmodelingprep.com/api/v3/search?query=${searchInput.toUpperCase()}&limit=10&exchange=NASDAQ&apikey=ed93f3e229380c530b7a0e7663f86b99`;
-    fetch(stockUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        this.getSearchData(data, callback);
-      });*/
 
     const response = await fetch(
       `http://localhost:3000/search?query=${searchInput}`

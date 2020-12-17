@@ -11,6 +11,9 @@ export class Results {
 
   highlightSearch(string, searchTerm) {
     let output = string;
+    if (!searchTerm) {
+      searchTerm = document.getElementById("search-input").value;
+    }
     let searchInput = searchTerm.toUpperCase();
     if (string != null) {
       if (string.includes(searchInput)) {
